@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini POS - Kasir & Keranjang Belanja</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-indigo-600">Mini POS Kampus</h1>
+            <p class="text-sm text-slate-500">Aplikasi Kasir & Keranjang Belanja Sederhana berbasis LocalStorage</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Kolom Kiri: Form Input Barang -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 lg:col-span-1 h-fit">
+                <h2 class="text-lg font-semibold mb-4 text-slate-700 flex items-center gap-2">
+                    🛒 Tambah Barang
+                </h2>
+                
+                <form id="productForm" class="space-y-4" novalidate>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Nama Barang</label>
+                        <input type="text" id="itemName" placeholder="Cth: Buku Tulis" 
+                            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <p id="errorName" class="text-xs text-red-500 mt-1 hidden"></p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Harga Satuan (Rp)</label>
+                        <input type="number" id="itemPrice" placeholder="Cth: 5000" 
+                            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <p id="errorPrice" class="text-xs text-red-500 mt-1 hidden"></p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Jumlah / Qty</label>
+                        <input type="number" id="itemQty" value="1" min="1" 
+                            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <p id="errorQty" class="text-xs text-red-500 mt-1 hidden"></p>
+                    </div>
+
+                    <button type="submit" 
+                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-lg transition-colors shadow-sm cursor-pointer">
+                        Masukkan ke Keranjang
+                    </button>
+                </form>
+            </div>
+
+            <!-- Kolom Kanan: Tabel Keranjang & Kalkulator -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Tabel Keranjang -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-slate-700">Daftar Belanja</h2>
+                        <button id="btnReset" 
+                            class="text-xs bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer">
+                            Reset Transaksi
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-xs text-slate-500 uppercase">
+                                    <th class="py-3 px-2">No</th>
+                                    <th class="py-3 px-2">Nama Barang</th>
+                                    <th class="py-3 px-2">Harga</th>
+                                    <th class="py-3 px-2">Qty</th>
+                                    <th class="py-3 px-2">Subtotal</th>
+                                    <th class="py-3 px-2 text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cartTableBody" class="text-sm divide-y divide-slate-100">
+                                <!-- Data akan di-render via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Modul Kalkulator & Pembayaran -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <h2 class="text-lg font-semibold text-slate-700">Ringkasan Pembayaran</h2>
+                    
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-slate-600">Total Belanja</span>
+                            <span id="txtSubtotalSum" class="font-semibold text-slate-800">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600">Diskon (Otomatis / Kupon)</span>
+                            <span id="txtDiscount" class="font-semibold text-green-600">- Rp 0</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-2 border-t border-slate-200">
+                            <span class="font-bold text-slate-800">Total Akhir</span>
+                            <span id="txtGrandTotal" class="text-xl font-bold text-indigo-600">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <!-- Kode Promo & Pembayaran Tunai -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Kode Promo</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="promoCode" placeholder="Cth: HEMAT10" 
+                                    class="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-lg uppercase">
+                                <button id="btnApplyPromo" class="bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg hover:bg-slate-700 cursor-pointer">Gunakan</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Uang Bayar (Rp)</label>
+                            <input type="number" id="cashAmount" placeholder="Nominal uang diterima" 
+                                class="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-lg">
+                        </div>
+                    </div>
+
+                    <!-- Kembalian Info -->
+                    <div id="changeContainer" class="p-3 bg-slate-50 rounded-xl flex justify-between items-center text-sm">
+                        <span class="text-slate-600 font-medium">Uang Kembalian:</span>
+                        <span id="txtChange" class="font-bold text-slate-800">Rp 0</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
