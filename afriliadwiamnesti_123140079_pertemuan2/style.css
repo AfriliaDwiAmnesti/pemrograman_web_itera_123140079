@@ -1,0 +1,6 @@
+body {
+    background-color: #f8fafc;
+}
+input:focus, select:focus {
+    outline: none;
+}
