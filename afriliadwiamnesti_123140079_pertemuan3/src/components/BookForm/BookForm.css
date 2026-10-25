@@ -1,0 +1,9 @@
+.book-form { background: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 2rem; }
+.form-group { margin-bottom: 1rem; display: flex; flex-direction: column; }
+.form-group label { font-weight: 600; margin-bottom: 0.4rem; font-size: 0.9rem; color: #4a5568; }
+.form-group input, .form-group select { padding: 0.65rem; border: 1.5px solid #cbd5e0; border-radius: 6px; font-size: 0.95rem; }
+.input-error { border-color: #e53e3e !important; background-color: #fff5f5; }
+.error-message { color: #e53e3e; font-size: 0.8rem; margin-top: 0.3rem; }
+.form-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+.btn-submit { background-color: #3182ce; color: white; border: none; padding: 0.7rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
+.btn-cancel { background-color: #e2e8f0; color: #4a5568; border: none; padding: 0.7rem 1.2rem; border-radius: 6px; cursor: pointer; }
