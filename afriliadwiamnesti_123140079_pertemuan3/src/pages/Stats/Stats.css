@@ -1,0 +1,10 @@
+.stats-container { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.stats-container h2 { margin-top: 0; margin-bottom: 1.5rem; color: #2d3748; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; }
+.stat-card { padding: 1.5rem; border-radius: 10px; text-align: center; }
+.stat-card h3 { margin: 0; font-size: 1rem; color: #4a5568; }
+.stat-value { font-size: 2.2rem; font-weight: 700; margin: 0.5rem 0 0 0; }
+.card-total { background: #edf2f7; color: #2d3748; }
+.card-milik { background: #c6f6d5; color: #22543d; }
+.card-baca { background: #feebc8; color: #744210; }
+.card-beli { background: #e9d8fd; color: #441239; }
