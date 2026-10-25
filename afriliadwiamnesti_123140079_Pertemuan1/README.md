@@ -4,7 +4,7 @@
 ## Identitas Praktikan
 * **Nama Lengkap:** Afrilia Dwi Amnesti
 * **NIM:** 123140079
-* **Kelas Praktikum:** Kelas RA/RB
+* **Kelas Praktikum:** Kelas RA
 
 ---
 
